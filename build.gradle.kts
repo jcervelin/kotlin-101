@@ -65,5 +65,5 @@ tasks.register<JavaExec>("runSseClientDemo") {
     description = "Consumes a Spring WebFlux text/event-stream endpoint with Ktor Client."
     classpath = sourceSets["main"].runtimeClasspath
     mainClass = "com.ada.training.integration.sse.SpringFluxSseDemoKt"
-    args = listOf("http://localhost:8081/inventory/stream")
+    args = listOf("http://localhost:8080/training/inventory/stream")
 }

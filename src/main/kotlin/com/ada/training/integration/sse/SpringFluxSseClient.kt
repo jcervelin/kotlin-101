@@ -5,6 +5,7 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.sse.SSE
 import io.ktor.client.plugins.sse.sse
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.take
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.seconds
@@ -15,6 +16,7 @@ class SpringFluxSseClient(
 ) {
     suspend fun consumeInventoryUpdates(
         url: String,
+        maxEvents: Int? = null,
         onUpdate: suspend (InventoryUpdateEvent) -> Unit,
         onInvalidPayload: suspend (String, Throwable) -> Unit = { payload, cause ->
             println("Skipping invalid SSE payload: $payload")
@@ -22,7 +24,9 @@ class SpringFluxSseClient(
         },
     ) {
         httpClient.sse(urlString = url) {
-            incoming.collect { event ->
+            val events = maxEvents?.let { incoming.take(it) } ?: incoming
+
+            events.collect { event ->
                 val payload = event.data ?: return@collect
                 val update = decodeInventoryUpdate(payload, onInvalidPayload) ?: return@collect
 

@@ -106,7 +106,9 @@ The core of the client is:
 
 ```kotlin
 client.sse(urlString = url) {
-    incoming.collect { event ->
+    val events = maxEvents?.let { incoming.take(it) } ?: incoming
+
+    events.collect { event ->
         val payload = event.data ?: return@collect
         val update = json.decodeFromString<InventoryUpdateEvent>(payload)
         onUpdate(update)
@@ -118,13 +120,24 @@ Read this from inside out:
 
 1. `client.sse(...)` opens the SSE connection.
 2. `incoming` is a Kotlin `Flow` of server-sent events.
-3. `collect` handles one event at a time.
-4. `event.data` contains the JSON after the `data:` prefix.
-5. `Json.decodeFromString` turns the JSON payload into a Kotlin object.
+3. `take(maxEvents)` is optional; the demo uses it so the sample exits after
+   three events.
+4. `collect` handles one event at a time.
+5. `event.data` contains the JSON after the `data:` prefix.
+6. `Json.decodeFromString` turns the JSON payload into a Kotlin object.
 
 ## Running The Demo
 
-Start the Spring Boot service that exposes the stream, then run:
+The repository includes a small local SSE producer so the client demo can run
+without your Spring Boot service.
+
+Start the Ktor training server in one terminal:
+
+```powershell
+.\gradlew.bat runServer
+```
+
+Then run the SSE client in another terminal:
 
 ```powershell
 .\gradlew.bat runSseClientDemo
@@ -133,11 +146,25 @@ Start the Spring Boot service that exposes the stream, then run:
 By default, the demo calls:
 
 ```text
-http://localhost:8081/inventory/stream
+http://localhost:8080/training/inventory/stream
 ```
 
-You can also run the generated class directly with a different URL from your
-IDE by passing the endpoint as the first program argument.
+That local endpoint emits sample events in the same `data: {...}` format used
+by a Spring WebFlux `Flux<T>` endpoint that produces `text/event-stream`.
+The demo consumes three events and then exits. A production consumer would
+usually keep collecting until the application shuts down.
+
+For your real Spring Boot service, change the URL in the Gradle task or run the
+generated class from your IDE and pass the Spring endpoint as the first program
+argument.
+
+If you see `Connection refused`, the client code is working but the upstream
+service is not accepting connections at that host and port. Check that:
+
+1. The server process is running.
+2. The URL uses the correct port.
+3. The path points to the SSE endpoint.
+4. The endpoint produces `text/event-stream`.
 
 ## Practical Guidance
 

@@ -1,6 +1,7 @@
 package com.ada.training
 
 import com.ada.training.api.configureOrderRoutes
+import com.ada.training.api.configureExampleSseRoutes
 import com.ada.training.api.configureStatusPages
 import com.ada.training.application.OrderService
 import com.ada.training.infrastructure.InMemoryCatalogRepository
@@ -37,4 +38,5 @@ fun Application.module() {
 
     configureStatusPages()
     configureOrderRoutes(orderService)
+    configureExampleSseRoutes()
 }

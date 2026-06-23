@@ -60,6 +60,13 @@ data class OrderLineResponse(
 @Serializable
 data class ErrorResponse(val message: String)
 
+@Serializable
+data class InventoryUpdateEventResponse(
+    val productId: String,
+    val availableQuantity: Int,
+    val status: String,
+)
+
 fun Product.toResponse(): ProductResponse =
     ProductResponse(
         id = id.value,
