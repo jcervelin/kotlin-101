@@ -16,6 +16,8 @@ kotlin {
     jvmToolchain(21)
 }
 dependencies {
+    implementation("io.ktor:ktor-client-cio")
+    implementation("io.ktor:ktor-client-core")
     implementation("io.ktor:ktor-serialization-kotlinx-json")
     implementation("io.ktor:ktor-server-content-negotiation")
     implementation("io.ktor:ktor-server-status-pages")
@@ -56,4 +58,12 @@ tasks.register<JavaExec>("runOrderScenarioDemo") {
     classpath = sourceSets["main"].runtimeClasspath
     mainClass = "com.ada.training.playground.OrderScenarioDemoKt"
     standardInput = System.`in`
+}
+
+tasks.register<JavaExec>("runSseClientDemo") {
+    group = "examples"
+    description = "Consumes a Spring WebFlux text/event-stream endpoint with Ktor Client."
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass = "com.ada.training.integration.sse.SpringFluxSseDemoKt"
+    args = listOf("http://localhost:8081/inventory/stream")
 }

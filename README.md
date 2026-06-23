@@ -16,7 +16,8 @@ Java/Spring Boot developers.
 | Kotlin compared with Java | [docs/01-kotlin-for-java-developers.md](docs/01-kotlin-for-java-developers.md) |
 | Ktor compared with Spring Boot | [docs/02-ktor-for-spring-developers.md](docs/02-ktor-for-spring-developers.md) |
 | Side-by-side reference | [docs/03-java-spring-vs-kotlin-ktor-cheatsheet.md](docs/03-java-spring-vs-kotlin-ktor-cheatsheet.md) |
-| Next steps | [docs/04-next-steps.md](docs/04-next-steps.md) |
+| Next steps | [docs/04-next-steps.md](docs/05-next-steps.md) |
+| Consuming Spring WebFlux SSE with Ktor | [docs/05-consuming-spring-flux-sse-with-ktor.md](docs/04-consuming-spring-flux-sse-with-ktor.md) |
 
 ## Code Map
 
@@ -39,6 +40,7 @@ Kotlin.
 | `./gradlew runKotlinBasicsDemo` | interactive Kotlin language demo |
 | `./gradlew runKotlinSyntaxDemo` | Kotlin syntax features Java does not have |
 | `./gradlew runOrderScenarioDemo` | interactive domain/service demo without HTTP |
+| `./gradlew runSseClientDemo` | consumes a Spring WebFlux SSE endpoint with Ktor Client |
 | `./gradlew runServer` | starts the Ktor API |
 | `./gradlew test` | runs Ktor API tests |
 
@@ -48,6 +50,7 @@ On Windows PowerShell, use:
 .\gradlew.bat runKotlinBasicsDemo
 .\gradlew.bat runKotlinSyntaxDemo
 .\gradlew.bat runOrderScenarioDemo
+.\gradlew.bat runSseClientDemo
 .\gradlew.bat runServer
 .\gradlew.bat test
 ```
@@ -96,6 +99,7 @@ To build or run the project, use one of the following tasks:
 | `./gradlew runKotlinBasicsDemo` | Run the language demo |
 | `./gradlew runKotlinSyntaxDemo` | Run the syntax demo |
 | `./gradlew runOrderScenarioDemo` | Run the service demo |
+| `./gradlew runSseClientDemo` | Run the SSE client demo |
 
 If the server starts successfully, you'll see the following output:
 ```
